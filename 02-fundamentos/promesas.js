@@ -60,6 +60,7 @@ getEmpleado(3).then( empleado =>{
     })
     .then(resp =>{
         console.log(resp)
+
     })
     .catch( err =>{
         console.log(err)
