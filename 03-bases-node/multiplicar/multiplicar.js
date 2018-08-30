@@ -3,6 +3,9 @@ const fs = require('fs');
 
 
 let listarTabla=(base, limite)=>{
+
+    console.log(`Tabla del ${base}`.underline.green)
+
     for (let i=1;i<=limite;i++){
         console.log(`${base} * ${i} = ${base * i}`)
     }
