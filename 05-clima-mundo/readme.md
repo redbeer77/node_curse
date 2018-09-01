@@ -14,3 +14,8 @@ module.exports = {
     apikey
 }
 ```
+
+Para utilizarlo, ejecutar en la consola:
+```
+node app -d "Dirección a buscar"
+```
