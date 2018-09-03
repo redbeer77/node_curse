@@ -1,27 +1,27 @@
-
-const axios = require('axios')
 const argv = require('./config/yargs').argv;
-const fs = require('fs')
+const lugar = require('./lugar/lugar')
+const clima = require('./clima/clima')
 
-console.log(argv.direccion)
+//console.log(argv.direccion)
 
-let encodeUrl = encodeURI(argv.direccion);
+let getInfo = async(direccion) =>{
 
-axios.get(`https://nominatim.openstreetmap.org/search/street/${encodeUrl}?format=json&limit=1&polygon=1&addressdetails=1`)
-    .then(
-        obj =>{
-            let data = JSON.stringify(obj.data[0])
-            //console.log(data)
-            let latitud = obj.data[0].lat
-            let longintud = obj.data[0].lon
-            let name = obj.data[0].display_name
-            console.log(latitud,longintud,name)
+    try{
+        let coors = await lugar.getLugarLatLng(direccion)
+        let temp = await clima.getClima(coors.lat,coors.lon)
+        return(`El clima en ${ coors.name} es de ${temp} ºC`)
+    }
+    catch(e){
+        return `no se pudo determinar el clima en ${direccion}`
+    }
+}
 
-            fs.writeFile(`data.json`, data, (err) => {
-                if (err) throw new Error("Ha ocurrido un error al almacenar los datos",err)
-            });
-        }
-    )
-    .catch(
-        err=> console.log(err)
-    )
+getInfo(argv.direccion)
+    .then(msg => console.log(msg))
+    .catch(err=> console.log(err))
+
+
+// lugar.getLugarLatLng(argv.direccion)
+//     .then(resp => clima.getClima(resp.lat,resp.lon))
+//     .then(resp => console.log(resp))
+//     .catch(err => console.log(err))
